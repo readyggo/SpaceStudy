@@ -11,7 +11,7 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
+  Typography
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -38,12 +38,14 @@ function Header() {
     setAnchorElUser(null);
   };
 
+
   // menu set
   return (
     <AppBar
       sx={{
         position: { md: 'static', xs: 'fixed' },
-        height: { md: '20%' },
+        width:{md:'80%', xs:'100%'},
+        height: '20%',
         background: 'none',
         boxShadow: 'none',
       }}

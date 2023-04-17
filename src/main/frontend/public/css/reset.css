@@ -67,9 +67,15 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
+body{
   margin: 0;
   background-Image:url(/img/background.png);
+}
+
+#root{
+  width: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 /* 기본 셋업 */

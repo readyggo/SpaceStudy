@@ -1,0 +1,12 @@
+
+.mainBox{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 1280px;
+    height: 100vh;
+    width: 100vm;
+    margin: 0 auto;
+}
+
+
