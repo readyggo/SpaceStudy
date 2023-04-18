@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { theme, MainBox } from './js/theme.js';
 
-function SignIn(props) {
+function SignIn() {
   const th = createTheme();
 
   const handleSubmit = (event) => {
@@ -42,7 +42,6 @@ function SignIn(props) {
               width: '100%',
               height: '550px',
               background: {md:theme.pop_color , xs:'none'},
-              opacity:'70%',
               borderRadius: '20px',
               boxSizing:'border-box',
               display:'flex',
@@ -125,7 +124,7 @@ function SignIn(props) {
                     </Link>
                   </Grid>
                   <Grid item >
-                    <Link href="#" variant="body2">
+                    <Link to="/signUp" variant="body2">
                       Create an account.
                     </Link>
                   </Grid>
