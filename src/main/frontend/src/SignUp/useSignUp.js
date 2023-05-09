@@ -62,7 +62,7 @@ export function useEndTyping() {
   useEffect(() => {
     setTimeout(() => {
       setEndTyping(true);
-    }, 1);
+    }, 4900);
   }, []);
   return [endTyping];
 }
