@@ -1,18 +1,26 @@
 import { Box, TextField, Container, Avatar, Button, Link, Typography } from '@mui/material';
 import { theme, MainBox } from '../js/theme.js';
-import { useIsValidation, useEmailDuplicate, useEndTyping, useClick } from './useSignUp.js';
+import {
+  useIsValidation,
+  useEmailDuplicate,
+  useEndTyping,
+  useClick,
+  useIsHuman,
+  useSignUp
+} from './useSignUp.js';
 import Typed from 'react-typed';
 import styleSignUp from './styleSignUp.js';
+import ReCAPTCHA from 'react-google-recaptcha';
+
 
 function SignUp() {
-  const [endTyping] = useEndTyping(); // 타이핑 애니메이션 종료 시 발생함수
-  const [handleInputEmail, handleInputPassword, email, isEmail, ispassword] =
-    useIsValidation(); // 입력값 유효성 검사
-  const [isDuplicate] = useEmailDuplicate(email, isEmail); // 이메일 중복 검사
-  const [style] = styleSignUp(isEmail, isDuplicate, ispassword);
+  const [endTyping] = useEndTyping();
+  const [handleInputEmail, handleInputPassword, email, isEmail,password ,  ispassword] = useIsValidation();
+  const [isValidEmail] = useEmailDuplicate(email, isEmail);
+  const [style] = styleSignUp(isEmail, isValidEmail, ispassword);
   const [isClickEmailContinue, handleEmailClick, isClickPwdContinue, handlePwdClick] = useClick();
-
-  console.log(ispassword);
+  const [handleCaptchaResponse, isHuman] = useIsHuman();
+  const [handleSubmit] = useSignUp(ispassword , isEmail , isHuman , isValidEmail , email , password);
 
   return (
     <MainBox>
@@ -36,7 +44,7 @@ function SignUp() {
           </Link>
         </Box>
       </Box>
-      <Box id="container" sx={style.containerBox}>
+      <Box id="container" component='form' onSubmit={handleSubmit}  sx={style.containerBox}>
         <Container component="main" maxWidth="xs" sx={style.container}>
           <Box id="content" sx={style.contentBox}>
             <Typed
@@ -51,7 +59,7 @@ function SignUp() {
               strings={['welcom to Study <br> Let’s begin the study']}
               typeSpeed={80}
             />
-            {/* inpubBox : *email */}
+            {/* inputBox : *email */}
             <Box
               sx={{
                 ...style.inputBox,
@@ -62,7 +70,7 @@ function SignUp() {
               }}
             >
               <TextField
-                color={!isEmail || isDuplicate === undefined || isDuplicate ? 'error' : 'success'}
+                color={(!isEmail || (isValidEmail === undefined) || !isValidEmail) ? 'error' : 'success'}
                 margin="normal"
                 required
                 id="email"
@@ -70,16 +78,16 @@ function SignUp() {
                 name="email"
                 autoComplete="email"
                 onChange={handleInputEmail}
-                helperText={!isDuplicate ? '' : '중복된 아이디입니다.'}
+                helperText={isValidEmail || isValidEmail === undefined ? '' : '중복된 아이디입니다.'}
                 sx={{
                   width: '100%',
                   '& fieldset': {
                     borderColor:
-                      !isEmail || isDuplicate === undefined || isDuplicate ? '#ff0000' : '#95D27F',
+                    (!isEmail || (isValidEmail === undefined) || !isValidEmail) ? '#ff0000' : '#95D27F',
                   },
                   '&:hover fieldset': {
                     borderColor:
-                      !isEmail || isDuplicate === undefined || isDuplicate
+                    (!isEmail || (isValidEmail === undefined) || !isValidEmail)
                         ? '#ff0000 !important'
                         : '#95D27F !important',
                   },
@@ -92,14 +100,13 @@ function SignUp() {
                   top: '22px',
                 }}
                 variant="contained"
-                disabled={!isEmail || isDuplicate === undefined || isDuplicate}
+                disabled={!isEmail || isValidEmail === undefined || !isValidEmail}
                 onClick={handleEmailClick}
               >
                 Contained
               </Button>
             </Box>
-
-            {/* inpubBox : *password */}
+            {/* inputBox : *password */}
             <Box
               sx={{
                 ...style.inputBox,
@@ -147,24 +154,26 @@ function SignUp() {
                 Contained
               </Button>
             </Box>
+
+            {/* google : *ReCAPTCHA */}
+
+            {isClickPwdContinue && showRecaptcha(handleCaptchaResponse)}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="success"
               sx={{
-                display: isClickPwdContinue ? 'block' : 'none',
-                mt: 3,
-                mb: 2,
+                display: isHuman ? 'block' : 'none',
                 fontFamily: theme.title_font,
                 background: !isEmail || !ispassword ? '#ff0000 !important' : ' #FCD24F !important',
                 border:
                   !isEmail || !ispassword
                     ? 'solid 1px #ff0000 !important'
                     : 'solid 1px #95D27F !important',
-                marginTop: { xs: '50px' },
               }}
-              disabled={!isEmail || !ispassword}
+              disabled={!isEmail || !ispassword || !isHuman}
             >
               Sign In
             </Button>
@@ -172,6 +181,18 @@ function SignUp() {
         </Container>
       </Box>
     </MainBox>
+  );
+}
+
+function showRecaptcha(handleCaptchaResponse) {
+  console.log('showRecaptcha 진입');
+  return (
+    <Box sx={{ margin: {xs:'50px', md:'20px'}}}>
+      <ReCAPTCHA
+        sitekey="6LdZNdElAAAAAIwLK4P47_NA7DIMidAmzGSOwHVy"
+        onChange={handleCaptchaResponse}
+      />
+    </Box>
   );
 }
 

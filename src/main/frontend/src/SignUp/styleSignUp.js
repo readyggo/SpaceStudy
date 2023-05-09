@@ -1,6 +1,6 @@
 import { theme } from '../js/theme.js';
 
-export function styleSignUp(isEmail, isDuplicate, ispassword) {
+export function styleSignUp(isEmail, isValidEmail, ispassword) {
   const style = {
     containerBox: {
       width: { md: '50%', xs: '100%' },
@@ -45,9 +45,9 @@ export function styleSignUp(isEmail, isDuplicate, ispassword) {
       color: '#fff !important',
     },
     configue01: {
-      background: isEmail && !isDuplicate ? ' #95D27F !important' : '#ff0000 !important',
+      background: isEmail && isValidEmail ? ' #95D27F !important' : '#ff0000 !important',
       border:
-        isEmail && !isDuplicate ? 'solid 1px #95D27F !important' : 'solid 1px #ff0000 !important',
+        isEmail && isValidEmail ? 'solid 1px #95D27F !important' : 'solid 1px #ff0000 !important',
     },
 
     configue02: {

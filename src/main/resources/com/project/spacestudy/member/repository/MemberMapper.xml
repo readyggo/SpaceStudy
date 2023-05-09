@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.spacestudy.member.repository.MemberMapper">
+
+    <insert id="register">
+        INSERT INTO members
+        ( member_id, email, password)
+        VALUES
+        (
+            concat(10,date_format(current_timestamp,'%y%m%d'),LPAD(nextval(spacestudy.sq_member), 3, '0'))
+            ,#{email}
+            ,#{password}
+        )
+    </insert>
+
+    <select id="isValidEmail" resultType="int">
+        SELECT COUNT(*)
+        FROM members
+        WHERE email = #{email}
+    </select>
+
+</mapper>

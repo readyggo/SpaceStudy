@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MemberMapper {
         boolean register(Member member);
-        int isDuplicate(String email);
+        int isValidEmail(String email);
         Member findUser(String email);
 
 }

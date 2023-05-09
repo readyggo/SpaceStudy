@@ -17,23 +17,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
 
+
     private final MemberService memberService;
-    @PostMapping("/signUp/check/email")
-    public ResponseEntity CheckEmail(@RequestBody String email)
+    @PostMapping("/signUp/valid/email")
+    public ResponseEntity<Boolean> isValidEmail(@RequestBody String email)
     {
-        log.info( " CheckEmail init : {}" , email);
-        return memberService.isDuplicate(email) ?
-        ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+        log.info( " init isValidEmail : {}" , email);
+        boolean isValid = memberService.isValidEmail(email);
+        System.out.println(isValid);
+        return new ResponseEntity<>(isValid, HttpStatus.OK);
     }
+
+    @PostMapping("/signUp/is/human")
+    public ResponseEntity<Boolean> isHuman(@RequestBody String resp)
+    {
+        log.info(" init isHuman : {} ", resp);
+        boolean isHuman = memberService.isHuman(resp);
+        return new ResponseEntity<>(isHuman, HttpStatus.OK);
+    }
+
     @PostMapping("/signUp/data")
-    public ResponseEntity signUp(@RequestBody MemberDTO memberDTO){
+    public ResponseEntity<Boolean> signUp(@RequestBody MemberDTO memberDTO) {
 
-        log.info(" init MemberController : signIn info - {} , {}",  memberDTO.getEmail() , memberDTO.getPassword() );
-
+        log.info(" init signUp : signIn info - {} , {}", memberDTO.getEmail(), memberDTO.getPassword());
         Member member = new Member(memberDTO.getEmail(), memberDTO.getPassword());
         boolean isRegister = memberService.register(member);
-        return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"Success\"}");
+        return new ResponseEntity<>(isRegister, HttpStatus.OK);
     }
-
 
 }

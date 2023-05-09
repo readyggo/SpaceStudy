@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import Main from './Main.js';
 import SignIn from './SignIn.js';
-import SignUp from './SignUp/SignUp.js'
+import EmailConfirm from './SignUp/emailConfirm.js';
+import SignUp from './SignUp/SignUp.js';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" exact element={<Main />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signIn" element={<SignIn />} />
+        <Route path="/emailConfirm" element={<EmailConfirm/> }/>
       </Routes>
     </HashRouter>
   );

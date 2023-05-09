@@ -1,4 +1,4 @@
-package com.project.spacestudy.controller;
+package com.project.spacestudy.Site.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
